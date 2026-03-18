@@ -1,141 +1,79 @@
-const birthdayEvents = [
-    {name: 'Event 1', date: '2026-01-04'},
-    {name: 'Event 2', date: '2026-01-05'},
-    {name: 'Event 3', date: '2026-01-06'},
-    {name: 'Event 4', date: '2026-01-07'},
-    {name: 'Event 5', date: '2026-01-08'},
-    {name: 'Event 6', date: '2026-01-09'},
-    {name: 'Event 7', date: '2026-01-10'},
-    {name: 'Event 8', date: '2026-01-11'},
-    {name: 'Event 9', date: '2026-01-12'},
-    {name: 'Event 10', date: '2026-01-13'},
-    {name: 'Event 11', date: '2026-01-14'},
-    {name: 'Event 12', date: '2026-01-15'},
-    {name: 'Event 13', date: '2026-01-16'},
-    {name: 'Event 14', date: '2026-01-17'},
-    {name: 'Event 15', date: '2026-01-18'},
-    {name: 'Event 16', date: '2026-01-19'},
-    {name: 'Event 17', date: '2026-01-20'},
-    {name: 'Event 18', date: '2026-01-21'},
-    {name: 'Event 19', date: '2026-01-22'},
-    {name: 'Event 20', date: '2026-01-23'},
-    {name: 'Event 21', date: '2026-01-24'},
-    {name: 'Event 22', date: '2026-01-25'},
-    {name: 'Event 23', date: '2026-01-26'},
-    {name: 'Event 24', date: '2026-01-27'},
-    {name: 'Event 25', date: '2026-01-28'},
-    {name: 'Event 26', date: '2026-01-29'},
-    {name: 'Event 27', date: '2026-01-30'},
-    {name: 'Event 28', date: '2026-01-31'},
-    {name: 'Event 29', date: '2026-02-01'},
-    {name: 'Event 30', date: '2026-02-02'},
-    {name: 'Event 31', date: '2026-02-03'},
-    {name: 'Event 32', date: '2026-02-04'},
-    {name: 'Event 33', date: '2026-02-05'},
-    {name: 'Event 34', date: '2026-02-06'},
-    {name: 'Event 35', date: '2026-02-07'},
-    {name: 'Event 36', date: '2026-02-08'},
-    {name: 'Event 37', date: '2026-02-09'},
-    {name: 'Event 38', date: '2026-02-10'},
-    {name: 'Event 39', date: '2026-02-11'},
-    {name: 'Event 40', date: '2026-02-12'},
-    {name: 'Event 41', date: '2026-02-13'},
-    {name: 'Event 42', date: '2026-02-14'},
-    {name: 'Event 43', date: '2026-02-15'},
-    {name: 'Event 44', date: '2026-02-16'},
-    {name: 'Event 45', date: '2026-02-17'},
-    {name: 'Event 46', date: '2026-02-18'},
-    {name: 'Event 47', date: '2026-02-19'},
-    {name: 'Event 48', date: '2026-02-20'},
-    {name: 'Event 49', date: '2026-02-21'},
-    {name: 'Event 50', date: '2026-02-22'},
-    {name: 'Event 51', date: '2026-02-23'},
-    {name: 'Event 52', date: '2026-02-24'},
-    {name: 'Event 53', date: '2026-02-25'},
-    {name: 'Event 54', date: '2026-02-26'},
-    {name: 'Event 55', date: '2026-02-27'},
-    {name: 'Event 56', date: '2026-02-28'},
-    {name: 'Event 57', date: '2026-03-01'},
-    {name: 'Event 58', date: '2026-03-02'},
-    {name: 'Event 59', date: '2026-03-03'},
-    {name: 'Event 60', date: '2026-03-04'},
-    {name: 'Event 61', date: '2026-03-05'},
-    {name: 'Event 62', date: '2026-03-06'},
-    {name: 'Event 63', date: '2026-03-07'},
-    {name: 'Event 64', date: '2026-03-08'},
-    {name: 'Event 65', date: '2026-03-09'},
-    {name: 'Event 66', date: '2026-03-10'},
-    {name: 'Event 67', date: '2026-03-11'},
-    {name: 'Event 68', date: '2026-03-12'},
-    {name: 'Event 69', date: '2026-03-13'},
-    {name: 'Event 70', date: '2026-03-14'},
-    {name: 'Event 71', date: '2026-03-15'},
-    {name: 'Event 72', date: '2026-03-16'},
-    {name: 'Event 73', date: '2026-03-17'},
-    {name: 'Event 74', date: '2026-03-18'},
-    {name: 'Event 75', date: '2026-03-19'},
-    {name: 'Event 76', date: '2026-03-20'},
-    {name: 'Event 77', date: '2026-03-21'},
-    {name: 'Event 78', date: '2026-03-22'},
-    {name: 'Event 79', date: '2026-03-23'},
-    {name: 'Event 80', date: '2026-03-24'},
-    {name: 'Event 81', date: '2026-03-25'},
-    {name: 'Event 82', date: '2026-03-26'},
-    {name: 'Event 83', date: '2026-03-27'},
-    {name: 'Event 84', date: '2026-03-28'},
-    {name: 'Event 85', date: '2026-03-29'},
-    {name: 'Event 86', date: '2026-03-30'},
-    {name: 'Event 87', date: '2026-03-31'},
-    {name: 'Event 88', date: '2026-04-01'},
-    {name: 'Event 89', date: '2026-04-02'},
-    {name: 'Event 90', date: '2026-04-03'},
-    {name: 'Event 91', date: '2026-04-04'},
-    {name: 'Event 92', date: '2026-04-05'},
-    {name: 'Event 93', date: '2026-04-06'},
-    {name: 'Event 94', date: '2026-04-07'},
-    {name: 'Event 95', date: '2026-04-08'},
-    {name: 'Event 96', date: '2026-04-09'},
-    {name: 'Event 97', date: '2026-04-10'},
-    {name: 'Event 98', date: '2026-04-11'},
-    {name: 'Event 99', date: '2026-04-12'},
-    {name: 'Event 100', date: '2026-04-13'},
-    {name: 'Event 101', date: '2026-04-14'},
-    {name: 'Event 102', date: '2026-04-15'},
-    {name: 'Event 103', date: '2026-04-16'},
-    {name: 'Event 104', date: '2026-04-17'},
-    {name: 'Event 105', date: '2026-04-18'},
-    {name: 'Event 106', date: '2026-04-19'},
-    {name: 'Event 107', date: '2026-04-20'},
-    {name: 'Event 108', date: '2026-04-21'},
-    {name: 'Event 109', date: '2026-04-22'},
-    {name: 'Event 110', date: '2026-04-23'},
-    {name: 'Event 111', date: '2026-04-24'},
-    {name: 'Event 112', date: '2026-04-25'},
-    {name: 'Event 113', date: '2026-04-26'},
-    {name: 'Event 114', date: '2026-04-27'},
-    {name: 'Event 115', date: '2026-04-28'},
-    {name: 'Event 116', date: '2026-04-29'},
-    {name: 'Event 117', date: '2026-04-30'},
-    {name: 'Event 118', date: '2026-05-01'},
-    {name: 'Event 119', date: '2026-05-02'},
-    {name: 'Event 120', date: '2026-05-03'},
-    {name: 'Event 121', date: '2026-05-04'},
-    {name: 'Event 122', date: '2026-05-05'},
-    {name: 'Event 123', date: '2026-05-06'},
-    {name: 'Event 124', date: '2026-05-07'},
-    {name: 'Event 125', date: '2026-05-08'},
-    {name: 'Event 126', date: '2026-05-09'},
-    {name: 'Event 127', date: '2026-05-10'},
-    {name: 'Event 128', date: '2026-05-11'},
-    {name: 'Event 129', date: '2026-05-12'},
-    {name: 'Event 130', date: '2026-05-13'},
-    {name: 'Event 131', date: '2026-05-14'},
-    {name: 'Event 132', date: '2026-05-15'},
-    {name: 'Event 133', date: '2026-05-16'},
-    {name: 'Event 134', date: '2026-05-17'},
-    {name: 'Event 135', date: '2026-05-18'},
-    {name: 'Event 136', date: '2026-05-19'},
-    {name: 'Event 137', date: '2026-05-20'},
-    {name: 'Event 138', date: '2026-05-21'},
-    {name: 'Event 139', date: '2026-05-22'},
-];
+Amélia Gomes (04/01)
+Fernanda Gomes (15/01)
+Janaína (19/01)
+Humberto (19/01)
+Márcio (21/01)
+Rodrigo (26/01)
+Lilian (27/01)
+Sofia (30/01)
+Bernardo (30/01)
+Antonella Gonçalves (07/02)
+Tita (14/02)
+Simone (18/02)
+Cristiane Gonçalves (19/02)
+Davi Cipriano (23/02)
+Helena (26/02)
+Luiza (01/03)
+Valcir (03/03)
+Sarti (09/03)
+Vantuir (10/03)
+Michele Cipriano (10/03)
+Ana (18/03)
+Erika Gomes (18/03)
+Gabriel (25/03)
+Gisa (26/03)
+Laura Barcelos (20/03)
+Gabrieli (04/04)
+Marli (12/04)
+Kaliane (13/04)
+Ceuza (16/04)
+Wagner F. Dalla Lana (22/04)
+Dryelle David (24/04)
+Mayelle (05/05)
+Lucas Dorneles (07/05)
+Danusa (13/05)
+Daniel (20/05)
+Airton (24/05)
+Bruno (24/05)
+Tiago (15/06)
+Letícia Fernanda (19/06)
+Terezinha (27/06)
+Jessika Gomes (06/07)
+Lusardo Neves (09/07)
+Március (10/07)
+Pedro Dutra (12/07)
+Naomi Gomes (14/07)
+Felipe (18/07)
+Marcelo Uberti (20/07)
+Duda A (07/08)
+Rodrigo (12/08)
+Duda P (20/08)
+Valnei (21/08)
+Alice (24/08)
+Gabriel Souza (24/08)
+Janine (30/08)
+Paulo (03/09)
+Grazi (09/09)
+Mariane (14/09)
+Luísa Neves (20/09)
+Natália (27/09)
+Ísis Barreto (27/09)
+Andrieli (28/09)
+Vithor (28/09)
+Eliane (02/10)
+Patrícia (15/10)
+Adria Barreto (17/10)
+Fernanda Argenta (22/10)
+Naira (27/10)
+Alcionir (04/11)
+Franciele (08/11)
+Francisca (15/11)
+Jemima Vautero (20/11)
+Christyn (25/11)
+Carina Schwarke (29/11)
+Fernanda Barcelos (03/12)
+Márcia Rosângela Freitas (09/12)
+Matheus Lara (11/12)
+Grazi (15/12)
+Pietro (17/12)
+Fabiana Ramos (21/12)

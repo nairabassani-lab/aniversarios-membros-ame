@@ -6,6 +6,7 @@
   <title>Aniversariantes - A.M.E Luz das Nações</title>
   <link rel="stylesheet" href="style.css">
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
@@ -25,6 +26,22 @@
 
     <div class="calendar-card">
       <div id="calendar"></div>
+    </div>
+  </div>
+
+  <!-- Modal de Edição -->
+  <div id="modal-overlay" class="modal-overlay" style="display:none">
+    <div class="modal">
+      <h2>Editar Aniversariante</h2>
+      <input type="hidden" id="edit-id">
+      <input type="text" id="edit-nome" placeholder="Nome">
+      <input type="date" id="edit-data">
+      <input type="text" id="edit-endereco" placeholder="Endereço">
+      <div class="modal-buttons">
+        <button onclick="salvarEdicao()">Salvar</button>
+        <button class="btn-excluir" onclick="excluirAniversariante()">Excluir</button>
+        <button class="btn-cancelar" onclick="fecharModal()">Cancelar</button>
+      </div>
     </div>
   </div>
 

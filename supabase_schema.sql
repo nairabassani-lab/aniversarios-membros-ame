@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS aniversariantes (
   nome       TEXT            NOT NULL,
   dia        SMALLINT        NOT NULL CHECK (dia BETWEEN 1 AND 31),
   mes        SMALLINT        NOT NULL CHECK (mes BETWEEN 1 AND 12),
+  ano        SMALLINT,
   endereco   TEXT,
   criado_em  TIMESTAMPTZ     NOT NULL DEFAULT NOW(),
   atualizado_em TIMESTAMPTZ  NOT NULL DEFAULT NOW()

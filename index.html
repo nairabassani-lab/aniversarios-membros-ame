@@ -21,6 +21,9 @@
       <input type="text" id="nome" placeholder="Nome">
       <input type="date" id="data">
       <input type="text" id="endereco" placeholder="Endereço">
+      <label class="label-foto">Foto (opcional)
+        <input type="file" id="foto" accept="image/*">
+      </label>
       <button onclick="adicionarAniversariante()">Adicionar</button>
     </div>
 
@@ -34,9 +37,19 @@
     <div class="modal">
       <h2>Editar Aniversariante</h2>
       <input type="hidden" id="edit-id">
+      <div id="edit-foto-preview" class="foto-preview" style="display:none">
+        <img id="edit-foto-img" src="" alt="Foto">
+      </div>
       <input type="text" id="edit-nome" placeholder="Nome">
-      <input type="date" id="edit-data">
+      <div class="modal-dia-mes">
+        <input type="number" id="edit-dia" placeholder="Dia" min="1" max="31">
+        <input type="number" id="edit-mes" placeholder="Mês" min="1" max="12">
+        <input type="number" id="edit-ano" placeholder="Ano" min="1900" max="2100">
+      </div>
       <input type="text" id="edit-endereco" placeholder="Endereço">
+      <label class="label-foto">Alterar foto
+        <input type="file" id="edit-foto" accept="image/*">
+      </label>
       <div class="modal-buttons">
         <button onclick="salvarEdicao()">Salvar</button>
         <button class="btn-excluir" onclick="excluirAniversariante()">Excluir</button>

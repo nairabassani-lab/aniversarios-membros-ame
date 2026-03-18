@@ -98,7 +98,7 @@ function criarEventos(membros) {
         allDay: true,
         backgroundColor: '#e67e00',
         borderColor: '#e67e00',
-        extendedProps: { dbId: m.id, nome: m.nome, dia: m.dia, mes: m.mes, endereco: m.endereco || '' }
+        extendedProps: { dbId: m.id, nome: m.nome, dia: m.dia, mes: m.mes, ano: m.ano || '', endereco: m.endereco || '', fotoUrl: m.foto_url || '' }
       });
     });
   });
@@ -110,7 +110,7 @@ let calendar;
 async function inicializarCalendario() {
   const { data: membros, error } = await db
     .from('aniversariantes')
-    .select('id, nome, dia, mes, endereco')
+    .select('id, nome, dia, mes, ano, endereco, foto_url')
     .order('mes')
     .order('dia');
 
@@ -142,26 +142,31 @@ async function inicializarCalendario() {
     },
     eventClick: function(info) {
       abrirModal(info.event);
-    },
-    datesSet: function() {
-      const titulo = document.querySelector('.fc-toolbar-title');
-      if (titulo && titulo.textContent) {
-        titulo.textContent = titulo.textContent.charAt(0).toUpperCase() + titulo.textContent.slice(1);
-      }
     }
   });
   calendar.render();
 }
 
 function abrirModal(event) {
-  const { dbId, nome, dia, mes, endereco } = event.extendedProps;
-  const mesStr = String(mes).padStart(2, '0');
-  const diaStr = String(dia).padStart(2, '0');
+  const { dbId, nome, dia, mes, ano, endereco, fotoUrl } = event.extendedProps;
 
   document.getElementById('edit-id').value = dbId;
   document.getElementById('edit-nome').value = nome;
-  document.getElementById('edit-data').value = new Date().getFullYear() + '-' + mesStr + '-' + diaStr;
+  document.getElementById('edit-dia').value = dia;
+  document.getElementById('edit-mes').value = mes;
+  document.getElementById('edit-ano').value = ano || '';
   document.getElementById('edit-endereco').value = endereco || '';
+  document.getElementById('edit-foto').value = '';
+
+  const preview = document.getElementById('edit-foto-preview');
+  const img = document.getElementById('edit-foto-img');
+  if (fotoUrl) {
+    img.src = fotoUrl;
+    preview.style.display = 'block';
+  } else {
+    preview.style.display = 'none';
+    img.src = '';
+  }
 
   document.getElementById('modal-overlay').style.display = 'flex';
 }
@@ -170,24 +175,45 @@ function fecharModal() {
   document.getElementById('modal-overlay').style.display = 'none';
 }
 
+async function uploadFoto(arquivo, id) {
+  const ext = arquivo.name.split('.').pop();
+  const caminho = id + '.' + ext;
+  const { error } = await db.storage.from('fotos').upload(caminho, arquivo, { upsert: true });
+  if (error) { alert('Erro ao enviar foto: ' + error.message); return null; }
+  const { data } = db.storage.from('fotos').getPublicUrl(caminho);
+  return data.publicUrl;
+}
+
 async function salvarEdicao() {
   const id = document.getElementById('edit-id').value;
   const nome = document.getElementById('edit-nome').value.trim();
-  const dataISO = document.getElementById('edit-data').value;
+  const dia = parseInt(document.getElementById('edit-dia').value, 10);
+  const mes = parseInt(document.getElementById('edit-mes').value, 10);
+  const ano = document.getElementById('edit-ano').value;
   const endereco = document.getElementById('edit-endereco').value.trim();
+  const arquivoFoto = document.getElementById('edit-foto').files[0];
 
-  if (!nome || !dataISO) {
-    alert('Preencha o nome e a data.');
+  if (!nome || !dia || !mes) {
+    alert('Preencha o nome, dia e mês.');
     return;
   }
 
-  const partes = dataISO.split('-');
-  const dia = parseInt(partes[2], 10);
-  const mes = parseInt(partes[1], 10);
+  let fotoUrl = null;
+  if (arquivoFoto) {
+    if (arquivoFoto.size > 1.5 * 1024 * 1024) {
+      alert('A foto deve ter no máximo 1,5 MB.');
+      return;
+    }
+    fotoUrl = await uploadFoto(arquivoFoto, id);
+    if (!fotoUrl) return;
+  }
+
+  const campos = { nome, dia, mes, ano: ano ? parseInt(ano, 10) : null, endereco: endereco || null };
+  if (fotoUrl) campos.foto_url = fotoUrl;
 
   const { data: atualizado, error } = await db
     .from('aniversariantes')
-    .update({ nome, dia, mes, endereco: endereco || null })
+    .update(campos)
     .eq('id', id)
     .select();
 
@@ -248,19 +274,53 @@ async function adicionarAniversariante() {
   const partes = dataISO.split('-');
   const dia = parseInt(partes[2], 10);
   const mes = parseInt(partes[1], 10);
+  const anoNasc = parseInt(partes[0], 10);
+  const arquivoFoto = document.getElementById('foto').files[0];
 
-  const { error } = await db
+  if (arquivoFoto && arquivoFoto.size > 1.5 * 1024 * 1024) {
+    alert('A foto deve ter no máximo 1,5 MB.');
+    return;
+  }
+
+  // Tenta inserir com o campo 'ano'. Se a coluna não existir ainda, insere sem ele.
+  let { data: inserido, error } = await db
     .from('aniversariantes')
-    .insert([{ nome, dia, mes, endereco: endereco || null }]);
+    .insert([{ nome, dia, mes, ano: anoNasc, endereco: endereco || null }])
+    .select();
+
+  if (error && error.message.toLowerCase().includes('ano')) {
+    const resultado = await db
+      .from('aniversariantes')
+      .insert([{ nome, dia, mes, endereco: endereco || null }])
+      .select();
+    inserido = resultado.data;
+    error = resultado.error;
+  }
 
   if (error) {
     alert('Erro ao adicionar: ' + error.message);
     return;
   }
 
+  if (!inserido || inserido.length === 0) {
+    alert('Permissão negada pelo banco de dados. Execute o script fix_rls_policies.sql no Supabase.');
+    return;
+  }
+
+  // Faz upload da foto se houver
+  if (arquivoFoto) {
+    const novoId = inserido[0].id;
+    const fotoUrl = await uploadFoto(arquivoFoto, novoId);
+    if (fotoUrl) {
+      await db.from('aniversariantes').update({ foto_url: fotoUrl }).eq('id', novoId);
+    }
+  }
+
+  alert('Aniversariante adicionado com sucesso!');
   document.getElementById('nome').value = '';
   document.getElementById('data').value = '';
   document.getElementById('endereco').value = '';
+  document.getElementById('foto').value = '';
 
   await inicializarCalendario();
 }

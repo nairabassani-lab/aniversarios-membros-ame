@@ -9,6 +9,16 @@ input { width: 100%; padding: 10px; margin-top: 10px; border-radius: 10px; borde
 button { width: 100%; padding: 12px; margin-top: 15px; border-radius: 10px; border: none; background: #F57C00; color: white; font-weight: bold; cursor: pointer; }
 button:hover { background: #FF9800; }
 .fc-toolbar-title { color: #1F3A73; }
+.fc-toolbar-title::first-letter { text-transform: uppercase; }
+
+.modal-dia-mes { display: flex; gap: 10px; }
+.modal-dia-mes input { flex: 1; }
+
+.label-foto { display: block; margin-top: 10px; font-size: 13px; color: #555; cursor: pointer; }
+.label-foto input[type="file"] { display: block; margin-top: 4px; width: 100%; font-size: 13px; border: 1px dashed #ccc; border-radius: 10px; padding: 8px; background: #fafafa; cursor: pointer; }
+
+.foto-preview { text-align: center; margin-top: 10px; }
+.foto-preview img { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 3px solid #e67e00; }
 
 /* Modal */
 .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 9999; }
